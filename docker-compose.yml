@@ -1,0 +1,101 @@
+services:
+  keygen:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+    platform: linux/amd64
+    command: ["/usr/local/bin/tashi-demo-keygen", "--out-dir", "/keys", "--count", "4", "--idempotent"]
+    volumes:
+      - keys:/keys
+
+  node1:
+    build: .
+    platform: linux/amd64
+    depends_on:
+      keygen:
+        condition: service_completed_successfully
+    environment:
+      NODE_INDEX: "1"
+      HOST_BIND_PORT: "8001"
+      KEY_DIR: "/keys"
+      COUNT: "4"
+    command: ["/app/scripts/node-entrypoint.sh"]
+    volumes:
+      - keys:/keys
+    networks:
+      tashi:
+        ipv4_address: 172.30.0.11
+    ports:
+      - "18001:8001"
+
+  node2:
+    build: .
+    platform: linux/amd64
+    depends_on:
+      keygen:
+        condition: service_completed_successfully
+    environment:
+      NODE_INDEX: "2"
+      HOST_BIND_PORT: "8002"
+      KEY_DIR: "/keys"
+      COUNT: "4"
+    command: ["/app/scripts/node-entrypoint.sh"]
+    volumes:
+      - keys:/keys
+    networks:
+      tashi:
+        ipv4_address: 172.30.0.12
+    ports:
+      - "18002:8002"
+
+  node3:
+    build: .
+    platform: linux/amd64
+    depends_on:
+      keygen:
+        condition: service_completed_successfully
+    environment:
+      NODE_INDEX: "3"
+      HOST_BIND_PORT: "8003"
+      KEY_DIR: "/keys"
+      COUNT: "4"
+    command: ["/app/scripts/node-entrypoint.sh"]
+    volumes:
+      - keys:/keys
+    networks:
+      tashi:
+        ipv4_address: 172.30.0.13
+    ports:
+      - "18003:8003"
+
+  node4:
+    build: .
+    platform: linux/amd64
+    depends_on:
+      keygen:
+        condition: service_completed_successfully
+    environment:
+      NODE_INDEX: "4"
+      HOST_BIND_PORT: "8004"
+      KEY_DIR: "/keys"
+      COUNT: "4"
+    command: ["/app/scripts/node-entrypoint.sh"]
+    volumes:
+      - keys:/keys
+    networks:
+      tashi:
+        ipv4_address: 172.30.0.14
+    ports:
+      - "18004:8004"
+
+volumes:
+  keys:
+
+networks:
+  tashi:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/16
