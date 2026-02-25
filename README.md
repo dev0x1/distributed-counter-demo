@@ -147,3 +147,15 @@ docker exec -it dist-counter-node1-1 bash -lc "ls -l /keys && head -n 1 /keys/no
 ```
 
 ---
+
+## LICENSE
+
+The Apache 2.0 license applies only to the source code of this project.
+
+### Dynamic Linking to Tashi Vertex
+
+This project dynamically links to the **Tashi Vertex** binary library (proprietary). Its origin and licensing details are provided in the [`NOTICE`](https://github.com/tashigg/tashi-vertex-rs/blob/main/NOTICE) file.
+
+**Disclaimer:** The Apache 2.0 license applies only to the source code of this project. The Tashi Vertex binary is not part of this open-source distribution and is governed by its own commercial license.
+
+---
